@@ -91,7 +91,7 @@ def collate_ADC_data(path_dir):
     ADC_list = []
     for i in range(file_length):
         # integrate y axis of each event and append to ADC_list
-        ADC_list += (integrate(subtract_baseline(port_event(filenames[i]),type='mean'))),
+        ADC_list += (integrate(subtract_baseline(port_event(filenames[i]),type='median'))),
 
         # print when used
         if i in display_vals:
@@ -136,7 +136,7 @@ def subtract_baseline(y_data, type = 'mean'):
     if (total > 0):
         return y_data - total
     else:
-        return y_data - total
+        return y_data + total
 
 def main():
 
