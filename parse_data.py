@@ -7,7 +7,7 @@ from os import mkdir
 from scipy import stats
 
 PATH = "TPC_lab/"
-test_event = "C1--PMT-test_calibration_long--12819.trc"
+test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 
 def plot_signal_event(event_name):
@@ -27,27 +27,18 @@ def port_event(event_name):
     #path = PATH+str(event_name)
     #contents = open(path, 'rb').read()
     #data = parse.ScopeData(data=contents)
+    ####print("Initial data value: {}".format(data.y[25]))
     return data.y
 
-def port_dir(path):
-    '''
-    take entire directory of lecroy trc files and move to numpy array
-    '''
 
-def display_event():
-    '''
-    display individual event
-    '''
-
-
-def plot_single():
+def plot_single(test_event):
     '''
     plot single event
     '''
     data = port_event(test_event)
     print(data)
-    #plt.plot(data.x, data.y)
-    #plt.show()
+    plt.plot(data.x, data.y)
+    plt.show()
 
     return 0
 
@@ -55,8 +46,9 @@ def integrate(y_data):
     '''
     collect the integral across an event by summing y components
     '''
-    total = np.sum(y_data)
-    return(total)
+    ####print("Baseline subtracted value: {}".format(y_data[25]))
+    int_tot = np.sum(y_data)
+    return(int_tot)
 
 def ADC_plot(ADCs, bins = 100,run_no = -1):
     '''
@@ -92,6 +84,7 @@ def collate_ADC_data(path_dir):
     for i in range(file_length):
         # integrate y axis of each event and append to ADC_list
         ADC_list += (integrate(subtract_baseline(port_event(filenames[i]),type='median'))),
+        #print(ADC_list)
 
         # print when used
         if i in display_vals:
@@ -133,10 +126,7 @@ def subtract_baseline(y_data, type = 'mean'):
         return 0
 
     # return values subtracted
-    if (total > 0):
-        return y_data - total
-    else:
-        return y_data + total
+    return y_data - total
 
 def main():
 
