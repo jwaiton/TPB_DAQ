@@ -6,7 +6,8 @@ from os.path import exists
 from os import mkdir
 from scipy import stats
 
-PATH = "TPC_lab/"
+#PATH = "TPC_lab/"
+PATH = "alpha_v2/"
 test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 
@@ -15,8 +16,10 @@ def plot_signal_event(event_name):
     plot events that appear to have signal in them (y value much larger than the baseline)
     '''
     data = parse.ScopeData(PATH+str(event_name))
-
-    plt.plot(data.x, data.y)
+    x_vals = np.linspace(0,len(data.x), dtype = int, num = len(data.x), endpoint = True)
+    #plt.plot(data.x, data.y)
+    plt.plot(x_vals, data.y)
+    plt.show()
 
 
 def port_event(event_name):
@@ -75,25 +78,46 @@ def collate_ADC_data(path_dir):
     '''
     # collect filenames
     filenames = next(walk(path_dir), (None, None, []))[2]
+    print(filenames[1])
     print("Number of files: {}".format(len(filenames)))
 
     file_length = len(filenames)
+    plot_numbers = np.linspace(0,2000002, dtype = int, num = 2000002, endpoint = True)
     display_vals = np.linspace(0,file_length, dtype = int, num = 25 )
 
     ADC_list = []
     for i in range(file_length):
         # integrate y axis of each event and append to ADC_list
-        ADC_list += (integrate(subtract_baseline(port_event(filenames[i]),type='median'))),
-        #print(ADC_list)
 
-        # print when used
-        if i in display_vals:
-            # print progress
-            print("{:.1f}% complete".format((i/len(filenames))*100))
+        # breaking it down into constituent components for testing
+        #plot_signal_event("C1--PMT-test_calibration_long--01934.trc")
+        #print(filenames[i])
+        try:
+            a = port_event(filenames[i])
+            #print(a)
 
+            b = subtract_baseline(a, type = 'median')
+            #print(b)
+
+            c = integrate(b)
+            #if (c < -500):
+            #    print(c)
+            #    plt.plot(plot_numbers,a)
+            #    plt.show()
+
+            ADC_list += (-c),
+
+            # print when used
+            if i in display_vals:
+                # print progress
+                print("{:.1f}% complete".format((i/len(filenames))*100))
+
+
+        except:
+            pass
     return ADC_list
 
-def subtract_baseline(y_data, type = 'mean'):
+def subtract_baseline(y_data, type = 'median'):
     '''
     remove the pedestal in singular events (quickly!)
     '''
@@ -129,6 +153,8 @@ def subtract_baseline(y_data, type = 'mean'):
     return y_data - total
 
 def main():
+
+    #plot_signal_event(test_event)
 
     run_no = input("Run Number: ")
 
