@@ -6,8 +6,15 @@ from os.path import exists
 from os import mkdir
 from scipy import stats
 
+'''
+
+Currently this script will take a folder (PATH) and output the lecroy TRC files as a charge histogram with minimalist baseline subtraction
+
+'''
+
+
 #PATH = "TPC_lab/"
-PATH = "alpha_v2/"
+PATH = "MARC_DATA/last_data/"
 test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 
