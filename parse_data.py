@@ -14,23 +14,22 @@ Will be further developed and better commented if need-be
 '''
 
 
-#PATH = "TPC_lab/"
-PATH = "MARC_DATA/last_data/"
-test_event = "C1--PMT-test_calibration_long--00000.trc"
-output_dir = "output/"
 
-def plot_signal_event(event_name):
+
+def plot_signal_event(event_name, PATH):
     '''
     plot events that appear to have signal in them (y value much larger than the baseline)
     '''
     data = parse.ScopeData(PATH+str(event_name))
     x_vals = np.linspace(0,len(data.x), dtype = int, num = len(data.x), endpoint = True)
     #plt.plot(data.x, data.y)
-    plt.plot(x_vals, data.y)
+
+    # flip
+    plt.plot(x_vals, -data.y)
     plt.show()
 
 
-def port_event(event_name):
+def port_event(event_name, PATH):
     '''
     collect data for a singular lecroy trc file
     '''
@@ -42,11 +41,11 @@ def port_event(event_name):
     return data.y
 
 
-def plot_single(test_event):
+def plot_single(test_event, PATH):
     '''
     plot single event
     '''
-    data = port_event(test_event)
+    data = port_event(test_event, PATH)
     print(data)
     plt.plot(data.x, data.y)
     plt.show()
@@ -101,7 +100,9 @@ def collate_ADC_data(path_dir):
         #plot_signal_event("C1--PMT-test_calibration_long--01934.trc")
         #print(filenames[i])
         try:
-            a = port_event(filenames[i])
+            a = port_event(filenames[i], PATH)
+            # flip to positive
+            a = -a
             #print(a)
 
             b = subtract_baseline(a, type = 'median')
@@ -113,7 +114,7 @@ def collate_ADC_data(path_dir):
             #    plt.plot(plot_numbers,a)
             #    plt.show()
 
-            ADC_list += (-c),
+            ADC_list += (c),
 
             # print when used
             if i in display_vals:
@@ -187,5 +188,10 @@ def main():
 
     print("Job done!")
 
+if __name__ == "__main__":
 
-main()
+    PATH = "calib_500NS_100K/"
+    #PATH = "calib/"
+    test_event = "C1--PMT-test_calibration_long--00000.trc"
+    output_dir = "output/"
+    main()
