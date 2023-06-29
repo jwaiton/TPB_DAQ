@@ -63,29 +63,31 @@ def integrate(y_data):
 def integrate_range(y_data, window = 0, debug = False):
     '''
     Selects range to integrate over based on largest value within the event. 
-    If no window is given, chooses len(y_data)//10.
+    If no window is given, chooses 10.
 
     Perhaps make 'central value' choice an option later rather than largest value? undecided
     '''
+        # if window != 0, find index of largest event in data
+    if (window == 0 ):
+        window = 10
+        
 
-    # if window != 0, find index of largest event in data
-    if (window != 0 ):
-        peak = max(y_data)
-        peak_index = y_data.index(peak)
-    else: # if window = 0, take as described above
-        peak_index = len(y_data)//2
-        window = len(y_data)//10
-
+    # find largest event
+    peak_index = np.argmax(y_data)
 
     # safety check to make sure index overflow doesn't occur
+    # if overflow, set window to centre
     if ((peak_index-window) < 0)  or (peak_index+window > len(y_data)):
-        print("Window larger than range of values, integrating full event...")
-    else:
-        # take samples around this relating to the window and save them for integration
-        y_data = y_data[peak_index-window:peak_index+window]
+        if debug == True:
+            print("Window overlapping with array edges, setting to centre...")
+
+        peak_index = len(y_data)//2
     
-    if debug = True:
-        print("Max value {:.4g} found at index {:.4g}. Integrating...".format(peak, peak_index))
+    # take samples around this relating to the window and save them for integration
+    y_data = y_data[peak_index-window:peak_index+window]
+    
+    if debug == True:
+        print("Max value {:.4g} found at index {:.4g}. Integrating...".format(y_data[peak_index], peak_index))
 
     return(integrate(y_data))
 
@@ -136,8 +138,7 @@ def collate_ADC_data(path_dir):
 
             b = subtract_baseline(a, type = 'median')
             #print(b)
-
-            c = integrate(b)
+            c = integrate_range(b, window = 10)
             #if (c < -500):
             #    print(c)
             #    plt.plot(plot_numbers,a)
@@ -151,7 +152,8 @@ def collate_ADC_data(path_dir):
                 print("{:.1f}% complete".format((i/len(filenames))*100))
 
 
-        except:
+        except Exception as e:
+            print(e)
             pass
     return ADC_list
 
