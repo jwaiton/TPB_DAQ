@@ -60,6 +60,35 @@ def integrate(y_data):
     int_tot = np.sum(y_data)
     return(int_tot)
 
+def integrate_range(y_data, window = 0, debug = False):
+    '''
+    Selects range to integrate over based on largest value within the event. 
+    If no window is given, chooses len(y_data)//10.
+
+    Perhaps make 'central value' choice an option later rather than largest value? undecided
+    '''
+
+    # if window != 0, find index of largest event in data
+    if (window != 0 ):
+        peak = max(y_data)
+        peak_index = y_data.index(peak)
+    else: # if window = 0, take as described above
+        peak_index = len(y_data)//2
+        window = len(y_data)//10
+
+
+    # safety check to make sure index overflow doesn't occur
+    if ((peak_index-window) < 0)  or (peak_index+window > len(y_data)):
+        print("Window larger than range of values, integrating full event...")
+    else:
+        # take samples around this relating to the window and save them for integration
+        y_data = y_data[peak_index-window:peak_index+window]
+    
+    if debug = True:
+        print("Max value {:.4g} found at index {:.4g}. Integrating...".format(peak, peak_index))
+
+    return(integrate(y_data))
+
 def ADC_plot(ADCs, bins = 100,run_no = -1):
     '''
     plot charge histogram of event with ADCs along x and events along y
