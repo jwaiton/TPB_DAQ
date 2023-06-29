@@ -107,6 +107,7 @@ def ADC_plot(ADCs, bins = 100,run_no = -1):
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.title("Charge histogram")
+    plt.yscale('log')
     plt.savefig(output_dir + "RUN_" + str(run_no) + "/ADC_plot.png")
     plt.show()
 
@@ -221,7 +222,7 @@ def main():
 
 if __name__ == "__main__":
 
-    PATH = "calib_500NS_100K/"
+    PATH = "calib/calib_5US_500S/"
     #PATH = "calib/"
     test_event = "C1--PMT-test_calibration_long--00000.trc"
     output_dir = "output/"
