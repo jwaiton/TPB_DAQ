@@ -12,7 +12,7 @@ Simple plotting script
 
 
 #PATH = "TPC_lab/"
-PATH = "calib/"
+PATH = "calib/calib_500NS_500S/"
 test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 
