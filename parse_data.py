@@ -222,7 +222,7 @@ def main():
 
 if __name__ == "__main__":
 
-    PATH = "calib/calib_5US_500S/"
+    PATH = "SR_testing/SR_testing_500NS_1MS/"
     #PATH = "calib/"
     test_event = "C1--PMT-test_calibration_long--00000.trc"
     output_dir = "output/"

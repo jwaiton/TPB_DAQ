@@ -12,7 +12,7 @@ Simple plotting script
 
 
 #PATH = "TPC_lab/"
-PATH = "calib/calib_500NS_500S/"
+PATH = "SR_testing/SR_testing_500NS_1MS/"
 test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 
@@ -23,6 +23,7 @@ def plot_signal_event(event_name):
     data = parse.ScopeData(PATH+str(event_name))
     x_vals = np.linspace(0,len(data.x), dtype = int, num = len(data.x), endpoint = True)
     #plt.plot(data.x, data.y)
+    print(len(data.x))
     plt.plot(x_vals, -data.y)
     plt.title(str(event_name))
     plt.show()
