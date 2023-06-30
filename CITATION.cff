@@ -1,0 +1,22 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: TPB_DAQ
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: John
+    family-names: Waiton
+    email: john.waiton@postgrad.manchester.ac.uk
+    affiliation: University of Manchester
+    orcid: 'https://orcid.org/0000-0002-7281-384X'
+repository-code: 'https://github.com/jwaiton/TPB_DAQ'
+abstract: >-
+  Repository dedicated to working on data acquisition and
+  analysis for the University of Manchester TPB project.
+license: MIT
+commit: e0f2d592b629ffa967a3a03ab1a07822c91c00a8
+date-released: '2023-06-30'
