@@ -74,6 +74,7 @@ def integrate_range(y_data, window = 0, debug = False):
 
     # find largest event
     peak_index = np.argmax(y_data)
+    y_max = y_data[peak_index] # fixing issue with debug counting
 
     # safety check to make sure index overflow doesn't occur
     # if overflow, set window to centre
@@ -82,12 +83,11 @@ def integrate_range(y_data, window = 0, debug = False):
             print("Window overlapping with array edges, setting to centre...")
 
         peak_index = len(y_data)//2
-    
     # take samples around this relating to the window and save them for integration
     y_data = y_data[peak_index-window:peak_index+window]
     
     if debug == True:
-        print("Max value {:.4g} found at index {:.4g}. Integrating...".format(y_data[peak_index], peak_index))
+        print("Max value {:.4g} found at index {:.4g}. Integrating...".format(y_max, peak_index))
 
     return(integrate(y_data))
 
@@ -139,7 +139,7 @@ def collate_ADC_data(path_dir):
 
             b = subtract_baseline(a, type = 'median')
             #print(b)
-            c = integrate_range(b, window = 10)
+            c = integrate_range(b, window = 10, debug=True)
             #if (c < -500):
             #    print(c)
             #    plt.plot(plot_numbers,a)
@@ -222,8 +222,8 @@ def main():
 
 if __name__ == "__main__":
 
-    PATH = "SR_testing/SR_testing_500NS_1MS/"
-    #PATH = "calib/"
+    PATH = "SR_testing/SR_testing_500NS_5kS/"
+    #PATH = "calib/calib_1ms_1nspt/"
     test_event = "C1--PMT-test_calibration_long--00000.trc"
     output_dir = "output/"
     main()

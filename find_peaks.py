@@ -22,7 +22,7 @@ def fit_gauss_2exps(x, y, p0):
     return popt, pcov
 
 def main():
-    file_path = "output/RUN_19/ADC_data.npy"
+    file_path = "output/RUN_20/ADC_data.npy"
     data = np.load(file_path)
 
     # clip data below 0
@@ -33,12 +33,12 @@ def main():
     counts, bin_edges = np.histogram(newdata, bins = bins)
 
     # guesses for initial parameters (need 7)
-    #aprio = [550, 0.2, 0.02, 405, 0.034, 781199, 0.0007] # RUN 20 -> 1MS_500NS
-    aprio = [370, 0.05, 0.02, 100, 0.034, 50000, 0.005] # RUN 19 -> 500S_500NS
+    aprio = [550, 0.2, 0.02, 405, 0.034, 781199, 0.0007] # RUN 20 -> 1MS_500NS
+    #aprio = [370, 0.05, 0.02, 100, 0.034, 50000, 0.005] # RUN 19 -> 500S_500NS
 
      # create xspace to plot the function across thats more continuous than the previous binning   
-    #xspace = np.linspace(0,0.6, len(bin_edges)) # RUN 20 -> 1MS_500NS
-    xspace = np.linspace(0,0.15, len(bin_edges)) # RUN 19 -> 500S_500NS
+    xspace = np.linspace(0,0.6, len(bin_edges)) # RUN 20 -> 1MS_500NS
+    #xspace = np.linspace(0,0.15, len(bin_edges)) # RUN 19 -> 500S_500NS
 
     # alter prominence to alter peak sensitivity
     peaks, _ = find_peaks(counts, prominence = 100)
@@ -56,7 +56,7 @@ def main():
 
     ax.bar(bin_centers, counts, width=(bin_edges[1] - bin_edges[0]), label=r'Histogram entries')
     ax.plot(xspace, combined_func(xspace, *popt), color='orange', linewidth=2.5, label=r'Fitted function')
-    ax.set_xlabel("Arbitrary units", fontsize = 15)
+    ax.set_xlabel("Arbitrary charge units", fontsize = 15)
     ax.set_ylabel("Entries", fontsize = 15)
     ax.tick_params(axis='x', labelsize = 14)
     ax.tick_params(axis='y', labelsize = 14)
@@ -73,7 +73,7 @@ def main():
     ax.text(0.7, 0.875, textstr, transform=ax.transAxes, fontsize=11,
             verticalalignment='top', bbox=props)
     ax.set_yscale("log")
-    ax.set_title("Run 19 - 500ns 500S", fontsize = 17)
+    ax.set_title("Run 20 - 500ns 5kS", fontsize = 17)
     ax.legend()
     #fig.tight_layout()
     plt.show()
