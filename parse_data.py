@@ -139,7 +139,7 @@ def collate_ADC_data(path_dir):
 
             b = subtract_baseline(a, type = 'median')
             #print(b)
-            c = integrate_range(b, window = 10, debug=True)
+            c = integrate_range(b, window = 10, debug=False)
             #if (c < -500):
             #    print(c)
             #    plt.plot(plot_numbers,a)
@@ -222,8 +222,8 @@ def main():
 
 if __name__ == "__main__":
 
-    PATH = "SR_testing/SR_testing_500NS_5kS/"
-    #PATH = "calib/calib_1ms_1nspt/"
+    #PATH = "SR_testing/SR_testing_500NS_5kS/"
+    PATH = "calib/calib_1ms_4nspt/"
     test_event = "C1--PMT-test_calibration_long--00000.trc"
     output_dir = "output/"
     main()
