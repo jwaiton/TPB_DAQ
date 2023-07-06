@@ -22,7 +22,7 @@ def fit_gauss_2exps(x, y, p0):
     return popt, pcov
 
 def main():
-    file_path = "output/RUN_20/ADC_data.npy"
+    file_path = "output/RUN_21/ADC_data.npy"
     data = np.load(file_path)
 
     # clip data below 0
@@ -33,12 +33,12 @@ def main():
     counts, bin_edges = np.histogram(newdata, bins = bins)
 
     # guesses for initial parameters (need 7)
-    aprio = [550, 0.2, 0.02, 405, 0.034, 781199, 0.0007] # RUN 20 -> 1MS_500NS
-    #aprio = [370, 0.05, 0.02, 100, 0.034, 50000, 0.005] # RUN 19 -> 500S_500NS
+    #aprio = [550, 0.2, 0.02, 405, 0.034, 781199, 0.0007] # RUN 20 -> 1MS_500NS
+    aprio = [370, 0.05, 0.02, 100, 0.034, 50000, 0.005] # RUN 19 -> 500S_500NS
 
      # create xspace to plot the function across thats more continuous than the previous binning   
-    xspace = np.linspace(0,0.6, len(bin_edges)) # RUN 20 -> 1MS_500NS
-    #xspace = np.linspace(0,0.15, len(bin_edges)) # RUN 19 -> 500S_500NS
+    #xspace = np.linspace(0,0.6, len(bin_edges)) # RUN 20 -> 1MS_500NS
+    xspace = np.linspace(0,0.15, len(bin_edges)) # RUN 19 -> 500S_500NS
 
     # alter prominence to alter peak sensitivity
     peaks, _ = find_peaks(counts, prominence = 100)
