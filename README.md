@@ -6,6 +6,10 @@ Currently a repository dedicated to working around lecroys stupid TRC files and 
 
 Takes folder of TRC files and creates integrated charge histogram, outputs to output/run_NN folder integrated data and basic plot.
 
+### parse_data_waveforms.py
+
+Takes folder of TRC files and creates dumb waveform data, outputs to output_waveforms/run_NN folder waveform plotting data. Use in conjunction with plot_data.py.
+
 ### plot_data.py
 
 More precise plotting control for .npy files
@@ -22,3 +26,5 @@ Assuming file structure matches expected 'C1--PMT-test_calibration_long--' forma
 ### plot_data_points.py
 
 Automated plotting script, will continuously plot.
+
+
