@@ -29,7 +29,7 @@ def plot_signal_event(event_name, PATH):
     plt.show()
 
 
-def port_event(event_name, PATH):
+def port_event(event_name, PATH, x_data = False):
     '''
     collect data for a singular lecroy trc file
     '''
@@ -38,7 +38,10 @@ def port_event(event_name, PATH):
     #contents = open(path, 'rb').read()
     #data = parse.ScopeData(data=contents)
     ####print("Initial data value: {}".format(data.y[25]))
-    return data.y
+    if (x_data == False):
+        return data.y
+    elif (x_data == True):
+        return data.x, data.y
 
 
 def plot_single(test_event, PATH):
