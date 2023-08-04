@@ -23,7 +23,7 @@ def main():
     # make it run fast or not (remove stdev component and just add waveforms normally)
     fast_running = True
 
-    PATH = "alpha_test/alpha_vac_1nsppt/"     # file directory
+    PATH = "../../../../../media/e78368jw/EXFAT/TPB_LAB/betas_calib_1ms_1nspt/"     # file directory
     file_format = 'C1--PMT-test_calibration_long--' #00000.trc    file
     output_dir = "output_waveforms/"    # output directory
 
@@ -57,33 +57,39 @@ def main():
 
     # scan across all files
     for i in range(file_length):
+        
+        try:
+            # collect event
+            data_x, a = parse_data.port_event(filenames[i], PATH, x_data = True)
+            # flip
+            a = -a
 
-        # collect event
-        data_x, a = parse_data.port_event(filenames[i], PATH, x_data = True)
-        # flip
-        a = -a
+            # subtract baseline
+            b = parse_data.subtract_baseline(a, type = 'median')
 
-        # subtract baseline
-        b = parse_data.subtract_baseline(a, type = 'median')
+            if (fast_running == False):
+                # find std and scan files to see if any are above this.
+                stdev = np.std(b)
 
-        if (fast_running == False):
-            # find std and scan files to see if any are above this.
-            stdev = np.std(b)
+                for j in range(len(b)):
+                    # if data in the file is above standard deviation and positive
+                    if (b[j] > stdev) and (b[j] > 0):
+                        # add to specific element in the waveform array
+                        waveform_array[j] += b[j]
+            else:
+                # make b positive
+                # add waveform array normally if you are in a rush, setting in defaults
+                waveform_array += np.abs(b[0:len(waveform_array)])
 
-            for j in range(len(b)):
-                # if data in the file is above standard deviation and positive
-                if (b[j] > stdev) and (b[j] > 0):
-                    # add to specific element in the waveform array
-                    waveform_array[j] += b[j]
-        else:
-            # make b positive
-            # add waveform array normally if you are in a rush, setting in defaults
-            waveform_array += np.abs(b[0:len(waveform_array)])
-
-        # print when used
-        if i in display_vals:
-            # print progress
-            print("{:.1f}% complete".format((i/len(filenames))*100))
+            # print when used
+            if i in display_vals:
+                # print progress
+                print("{:.1f}% complete".format((i/len(filenames))*100))
+            
+        # catch exceptions so that it doesn't break the loop (it happens with dodgy data sometimes)
+        except Exception as e:
+            print(e)
+            pass
 
     
     # normalise waveform array DONT CURRENTLY
