@@ -26,6 +26,9 @@ def plot_waveform(file_path = 'NA', data = 'NA'):
     bins = 100
     #plt.hist(newdata, bins)
 
+    # subtract median
+    new_data = np.abs(new_data - np.median(new_data))
+
     # CURRENT SETUP FOR PRODUCING WAVEFORM PLOTS ACROSS X TIMESCALE, set range to 0,1000 for 1ms.
     plt.plot(np.linspace(0,99.605,num = len(new_data),endpoint = True),new_data)
     
@@ -36,5 +39,5 @@ def plot_waveform(file_path = 'NA', data = 'NA'):
     plt.show()
 
 if __name__ == "__main__":
-    file_path = "output_waveforms/RUN_33/ADC_data.npy"
+    file_path = "output_waveforms/RUN_34/ADC_data.npy"
     plot_waveform(file_path = file_path)
