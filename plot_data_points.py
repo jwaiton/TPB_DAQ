@@ -12,7 +12,7 @@ Simple plotting script
 
 
 #PATH = "TPC_lab/"
-PATH = "SR_testing/SR_testing_500NS_1MS/"
+PATH = "../../../../../media/e78368jw/SAMSUNG/tpblab/alpha_150mV_trig/"
 test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 

@@ -23,7 +23,7 @@ def main():
     # make it run fast or not (remove stdev component and just add waveforms normally)
     fast_running = True
 
-    PATH = "../../../../../media/e78368jw/EXFAT/TPB_LAB/betas_calib_1ms_1nspt/"     # file directory
+    PATH = "alpha_test_100us/56mV_trig_100us_dark8hrs/"     # file directory
     file_format = 'C1--PMT-test_calibration_long--' #00000.trc    file
     output_dir = "output_waveforms/"    # output directory
 
@@ -53,7 +53,8 @@ def main():
     if (fast_running == False):
         waveform_array = np.zeros(1000003)    
     else:
-        waveform_array = np.zeros(1000001)
+        # set this to be a couple of samples smaller than your true data sample (100000 instead of 100005)
+        waveform_array = np.zeros(100000)
 
     # scan across all files
     for i in range(file_length):
@@ -80,6 +81,7 @@ def main():
                 # make b positive
                 # add waveform array normally if you are in a rush, setting in defaults
                 waveform_array += np.abs(b[0:len(waveform_array)])
+                
 
             # print when used
             if i in display_vals:

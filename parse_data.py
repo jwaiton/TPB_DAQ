@@ -226,7 +226,7 @@ def main():
 if __name__ == "__main__":
 
     #PATH = "SR_testing/SR_testing_500NS_5kS/"
-    PATH = "../../../../../media/e78368jw/EXFAT/TPB_LAB/betas_calib_1ms_1nspt/"
+    PATH = "alpha_test_100us/56mV_trig_100us_dark8hrs/"
     test_event = "C1--PMT-test_calibration_long--00000.trc"
     output_dir = "output/"
     main()
