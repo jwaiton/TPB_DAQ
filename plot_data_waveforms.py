@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
     basic script for plotting waveforms
 '''
 
-def plot_waveform(file_path = 'NA', data = 'NA'):
+def plot_waveform(file_path = 'NA', data = 'NA', time = (100,90)):
     if (file_path != 'NA'):
         new_data = np.load(file_path)
         print("Processing {}".format(file_path))
@@ -18,8 +18,11 @@ def plot_waveform(file_path = 'NA', data = 'NA'):
     #data = np.load(file_path)
 
     print(len(new_data))
-    # clip the data, hard coded for testing
-    new_data = new_data[395:]
+    # figure out how much data to strip
+    div_frac = (time[1]/time[0])
+    # then strip it!
+    strip_val = len(new_data) - int(len(new_data)*div_frac)
+    new_data = new_data[strip_val:]
     print(len(new_data))
     #newerdata = newdata[newdata > -1000]
     #newdata = data[(data>0)]
