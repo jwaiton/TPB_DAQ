@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
     basic script for plotting waveforms
 '''
 
-def plot_waveform(file_path = 'NA', data = 'NA', time = (100,90)):
+def plot_waveform(file_path = 'NA', data = 'NA', time = (100,90), log_plot = False):
     if (file_path != 'NA'):
         new_data = np.load(file_path)
         print("Processing {}".format(file_path))
@@ -32,8 +32,11 @@ def plot_waveform(file_path = 'NA', data = 'NA', time = (100,90)):
     # subtract median
     new_data = np.abs(new_data - np.median(new_data))
 
-    # CURRENT SETUP FOR PRODUCING WAVEFORM PLOTS ACROSS X TIMESCALE, set range to 0,1000 for 1ms.
-    plt.plot(np.linspace(0,99.605,num = len(new_data),endpoint = True),new_data)
+    if log_plot == False:
+        # CURRENT SETUP FOR PRODUCING WAVEFORM PLOTS ACROSS X TIMESCALE, set range to 0,1000 for 1ms.
+        plt.plot(np.linspace(0,99.605,num = len(new_data),endpoint = True),new_data)
+    elif log_plot == True:
+        plt.plot(np.logspace(np.log10(0.001), np.log10(99.606), num = len(new_data), endpoint = True), new_data)
     
     plt.yscale('log')
     plt.xscale('log')
