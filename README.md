@@ -27,4 +27,22 @@ Assuming file structure matches expected 'C1--PMT-test_calibration_long--' forma
 
 Automated plotting script, will continuously plot.
 
+### process_waveforms.py
 
+Basic script to bin waveforms, and subtract one waveform from another for plotting. Used for background subtraction plots.
+
+### marc_binning.py
+
+Binning method stripped form Marc Seeman's Masters project found [here](https://github.com/MarcSeemann/Mphys-Project)
+
+#### Reformatting
+
+As part of a process to make the repo less script-heavy. Planning to take most major functions and put them in a well documented 'PMT_func.py' file. These two files are the beginning of this process.
+
+### data_binning.py
+
+Simple binning script that may or may not work
+
+### subtract_waveforms.py
+
+Simple subtraction application.
