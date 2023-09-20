@@ -2,9 +2,9 @@ import math as m
 import numpy as numpy
 from scipy.integrate import quad
 from scipy.special import expi
-from scipy.stats import loguniform
 import matplotlib.pyplot as plt
 import numpy as np
+
 
 ## CODE FROM MARC SEEMANN
 ## https://github.com/MarcSeemann/Mphys-Project/blob/Analysis/mc_model.py
@@ -66,7 +66,29 @@ def slow_comp(t, N_d, tau_t, t_a, A):
 
 
 def VL_fit(t, N_p, tau_s, N_d, A, t_a, tau_t):
-    return prompt_comp(t, N_p, tau_s) + slow_comp(t, N_d, tau_t, t_a, A)
+    return (prompt_comp(t, N_p, tau_s) + slow_comp(t, N_d, tau_t, t_a, A))
+
+def generate_MC(t, N_p, tau_s, N_d, A, t_a, tau_t, runs):
+    
+    vals = []
+
+    for i in range(runs):
+        print(i)
+        ar = np.zeros(runs)
+
+        for i in range(len(ar)):
+            ar[i] = np.random.uniform(low = min(t), high = max(t))
+
+        integral = 0.0
+
+        for i in ar:
+            integral += VL_fit(i, N_p, tau_s, N_d, A, t_a, tau_t)
+
+        soln = (max(t) - min(t))/float(runs)*integral
+        
+        vals.append(soln)
+
+    return vals
 
 
 def generate_data(t, N_p, tau_s, N_d, A, t_a, tau_t, runs):
@@ -135,11 +157,11 @@ def produce_toy(N_p, tau_s, N_d, A, t_a, tau_t, type, debug = False, plot = True
         plt.title(type)
         plt.xlabel('Time (us)')
         plt.ylabel('Arbitary Amplitude')
-        #plt.xscale('log')
+        plt.xscale('log')
         plt.show()
 
     # generate data
-    pdf_list = generate_data(t, N_p, tau_s, N_d, A, t_a, tau_t, runs = 1000)
+    pdf_list = generate_MC(t, N_p, tau_s, N_d, A, t_a, tau_t, runs = 1000)
     print("Done generating")
     np.save('sim_data_VL', pdf_list)
     #plt.hist(pdf_list, bins = 100)
