@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module fitting</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>fitting</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/e78368jw/Documents/TPB_Project/TPB_DAQ/fitting.py">/home/e78368jw/Documents/TPB_Project/TPB_DAQ/fitting.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-create_fit"><strong>create_fit</strong></a>(fnc, x, y, p, v, n_gauss, a_prio, mu=0)</dt><dd><tt>General&nbsp;fitting&nbsp;function&nbsp;for&nbsp;N&nbsp;gaussians&nbsp;including&nbsp;limiting&nbsp;function<br>
+&nbsp;<br>
+:param&nbsp;fnc:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Input&nbsp;function<br>
+:param&nbsp;x:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;values<br>
+:param&nbsp;y:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Y&nbsp;values<br>
+:param&nbsp;p:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Peak&nbsp;index<br>
+:param&nbsp;v:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Valley&nbsp;index<br>
+:param&nbsp;n_gauss:&nbsp;Number&nbsp;of&nbsp;gaussian&nbsp;fits<br>
+:param&nbsp;a_prio:&nbsp;&nbsp;A&nbsp;priori&nbsp;guesses&nbsp;for&nbsp;fit<br>
+:param&nbsp;mu:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mean&nbsp;(decides&nbsp;whether&nbsp;fixed&nbsp;or&nbsp;not)</tt></dd></dl>
+ <dl><dt><a name="-find_PV"><strong>find_PV</strong></a>(x, y, prom=100, plot=False)</dt><dd><tt>Peak&nbsp;and&nbsp;Valley&nbsp;finding&nbsp;code<br>
+&nbsp;<br>
+:param&nbsp;x:&nbsp;X&nbsp;values<br>
+:param&nbsp;y:&nbsp;Y&nbsp;values<br>
+:param&nbsp;prom:&nbsp;Prominence&nbsp;of&nbsp;peaks&nbsp;and&nbsp;valleys<br>
+:param&nbsp;plot:&nbsp;Plotting&nbsp;toggle<br>
+&nbsp;<br>
+:return&nbsp;(peaks,&nbsp;valleys):&nbsp;index&nbsp;for&nbsp;x&nbsp;at&nbsp;which&nbsp;y&nbsp;peaks&nbsp;and&nbsp;valleys</tt></dd></dl>
+ <dl><dt><a name="-fit_func"><strong>fit_func</strong></a>(function, x, y, p0)</dt><dd><tt>Function&nbsp;that&nbsp;separates&nbsp;the&nbsp;ugly&nbsp;parameters&nbsp;of&nbsp;curve_fit&nbsp;from&nbsp;the&nbsp;main&nbsp;codeline&nbsp;to&nbsp;reduce&nbsp;clutter.<br>
+Preferably&nbsp;used&nbsp;for&nbsp;singular&nbsp;gaussian&nbsp;fits<br>
+&nbsp;<br>
+:param&nbsp;function:&nbsp;Input&nbsp;function<br>
+:param&nbsp;x:&nbsp;X&nbsp;values<br>
+:param&nbsp;y:&nbsp;Y&nbsp;values<br>
+:param&nbsp;p0:&nbsp;A&nbsp;priori&nbsp;parameter&nbsp;guesses<br>
+&nbsp;<br>
+:return&nbsp;(popt,&nbsp;pcov):&nbsp;parameters&nbsp;values&nbsp;and&nbsp;covariances&nbsp;in&nbsp;tuple</tt></dd></dl>
+ <dl><dt><a name="-fit_func_fixed"><strong>fit_func_fixed</strong></a>(function, x, y, p0)</dt><dd><tt>Function&nbsp;that&nbsp;fixes&nbsp;the&nbsp;value&nbsp;of&nbsp;mu&nbsp;for&nbsp;respective&nbsp;fits,&nbsp;and&nbsp;separates&nbsp;the&nbsp;ugly&nbsp;parameters&nbsp;of&nbsp;curve_fit&nbsp;from&nbsp;the&nbsp;main&nbsp;codeline&nbsp;to&nbsp;reduce&nbsp;clutter.<br>
+&nbsp;<br>
+:param&nbsp;function:&nbsp;Input&nbsp;function<br>
+:param&nbsp;x:&nbsp;X&nbsp;values<br>
+:param&nbsp;y:&nbsp;Y&nbsp;values<br>
+:param&nbsp;p0:&nbsp;A&nbsp;priori&nbsp;parameter&nbsp;guesses<br>
+&nbsp;<br>
+:return&nbsp;(popt,&nbsp;pcov):&nbsp;parameters&nbsp;values&nbsp;and&nbsp;covariances&nbsp;in&nbsp;tuple</tt></dd></dl>
+ <dl><dt><a name="-gauss_1"><strong>gauss_1</strong></a>(x, A, mu, sigma)</dt><dd><tt>Gaussian&nbsp;function&nbsp;as&nbsp;per&nbsp;<a href="https://en.wikipedia.org/wiki/Gaussian_function">https://en.wikipedia.org/wiki/Gaussian_function</a><br>
+&nbsp;<br>
+:param&nbsp;x:&nbsp;X&nbsp;values<br>
+:param&nbsp;A:&nbsp;Amplitude<br>
+:param&nbsp;mu:&nbsp;Mean&nbsp;value&nbsp;<br>
+:param&nbsp;sigma:&nbsp;Variance<br>
+&nbsp;<br>
+:return:&nbsp;Y&nbsp;values&nbsp;wrt&nbsp;x&nbsp;for&nbsp;Gaussian&nbsp;function</tt></dd></dl>
+ <dl><dt><a name="-gauss_2"><strong>gauss_2</strong></a>(x, A1, mu1, sigma1, A2, mu2, sigma2)</dt><dd><tt>2&nbsp;Gaussian&nbsp;functions&nbsp;applied&nbsp;additively<br>
+&nbsp;<br>
+:param&nbsp;x:&nbsp;X&nbsp;values<br>
+:param&nbsp;A1:&nbsp;Amplitude&nbsp;of&nbsp;1st&nbsp;Gaussian<br>
+:param&nbsp;mu1:&nbsp;Mean&nbsp;value&nbsp;of&nbsp;1st&nbsp;Gaussian&nbsp;<br>
+:param&nbsp;sigma1:&nbsp;Variance&nbsp;of&nbsp;1st&nbsp;Gaussian<br>
+&nbsp;<br>
+:param&nbsp;A2:&nbsp;Amplitude&nbsp;of&nbsp;2nd&nbsp;Gaussian<br>
+:param&nbsp;mu2:&nbsp;Mean&nbsp;value&nbsp;of&nbsp;2nd&nbsp;Gaussian&nbsp;<br>
+:param&nbsp;sigma2:&nbsp;Variance&nbsp;of&nbsp;2nd&nbsp;Gaussian<br>
+&nbsp;<br>
+:return:&nbsp;Y&nbsp;values&nbsp;wrt&nbsp;x&nbsp;for&nbsp;double&nbsp;Gaussian&nbsp;function</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><tt>Collects&nbsp;charge&nbsp;histogram&nbsp;npy&nbsp;file&nbsp;and&nbsp;outputs&nbsp;N&nbsp;gaussian&nbsp;fits&nbsp;to&nbsp;it.</tt></dd></dl>
+ <dl><dt><a name="-plot_fit"><strong>plot_fit</strong></a>(fnc, x, y, x_trim, y_trim, popt, fixed=True, mu=0, n_ga=1)</dt><dd><tt>plot&nbsp;fits&nbsp;with&nbsp;a&nbsp;bunch&nbsp;of&nbsp;features.&nbsp;NEEDS&nbsp;CLEAN&nbsp;REWRITING</tt></dd></dl>
+ <dl><dt><a name="-print_parameters"><strong>print_parameters</strong></a>(popt, pcov, labels)</dt><dd><tt>print&nbsp;fitting&nbsp;parameters</tt></dd></dl>
+ <dl><dt><a name="-produce_data_points"><strong>produce_data_points</strong></a>(file_path, bin_no=100, plot=False)</dt><dd><tt>Produce&nbsp;data&nbsp;points&nbsp;(x,y)&nbsp;for&nbsp;fitting,&nbsp;and&nbsp;plot&nbsp;if&nbsp;asked&nbsp;for.<br>
+Also&nbsp;includes&nbsp;cleaning&nbsp;the&nbsp;data&nbsp;(removing&nbsp;below&nbsp;zero&nbsp;values,&nbsp;setting&nbsp;values&nbsp;smaller&nbsp;than&nbsp;1&nbsp;=&nbsp;0)<br>
+&nbsp;<br>
+:param&nbsp;file_path:&nbsp;Source&nbsp;file&nbsp;you're&nbsp;producing&nbsp;from<br>
+:param&nbsp;bin_no:&nbsp;Number&nbsp;of&nbsp;bins&nbsp;in&nbsp;histogram<br>
+:param&nbsp;plot:&nbsp;Plotting&nbsp;toggle<br>
+&nbsp;<br>
+:return&nbsp;(x,y):&nbsp;tuple&nbsp;of&nbsp;x&nbsp;and&nbsp;y&nbsp;values</tt></dd></dl>
+ <dl><dt><a name="-trim_data"><strong>trim_data</strong></a>(x, y, p, v, n_gauss, plot=False)</dt><dd><tt>Trim&nbsp;data&nbsp;to&nbsp;apply&nbsp;fit&nbsp;over</tt></dd></dl>
+</td></tr></table>
+</body></html>
