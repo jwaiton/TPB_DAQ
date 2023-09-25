@@ -63,7 +63,8 @@ def fit_func(function, x, y, p0):
 def fit_func_fixed(function, x, y, p0):
     '''
 
-    Function that fixes the value of mu for respective fits, and separates the ugly parameters of curve_fit from the main codeline to reduce clutter.
+    Function that fixes the value of mu for respective fits, and separates 
+    the ugly parameters of curve_fit from the main codeline to reduce clutter.
 
     :param function: Input function
     :param x: X values
