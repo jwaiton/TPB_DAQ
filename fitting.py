@@ -190,24 +190,35 @@ def create_fit(fnc, x, y, p, v, n_gauss, a_prio, mu = 0):
 
 
     
-def plot_fit(fnc, x, y, x_trim, y_trim, popt, fixed = True, mu = 0, n_ga = 1):
+def plot_fit(fnc, x, y, x_trim, y_trim, popt, mu = 0, n_ga = 1):
     '''
-    plot fits with a bunch of features. NEEDS CLEAN REWRITING
+    Plots the fitting functions, as well as the composite gaussians.
+
+    :param fnc:     Input function
+    :param x:       X values
+    :param y:       Y values
+    :param x_trim:  Trimmed x values
+    :param y_trim:  Trimmed y values
+    :param popt:    Fill parameters
+    :param mu:      Fixed mean (Remove this functionality)
+    :param n_ga:    number of gaussian peaks for fitting
     '''
 
+    # create the linear x space for clean plotting
     x_space = np.linspace(min(x), max(x), len(x))
     
-
+    # Plot data
     plt.plot(x, y, label = r'Data')
 
+    # if non-fixed mu
     if (mu == 0):
         y_space = fnc(x_space, *popt)
-        y_space[y_space < 1] = 1                # squashing values near 0 for plotting purposes
+        y_space[y_space < 1] = 1                                                        # squashing values near 0 for plotting purposes
         plt.plot(x_space, y_space, linewidth=2.5, label = r'Fitted function')
     else:
         y_space = fnc(x_space, popt[0], popt[1], popt[2], popt[3], mu*2, popt[4])
-        y_space[y_space < 1] = 1                            # squashing values near 0 for plotting purposes
-        plt.axvline(x_trim[0], color='blue', linestyle = 'dotted', linewidth = 1)                              # plotting limits of trim
+        y_space[y_space < 1] = 1                                                        # squashing values near 0 for plotting purposes
+        plt.axvline(x_trim[0], color='blue', linestyle = 'dotted', linewidth = 1)                               # plotting limits of fitting
         plt.axvline(x_trim[-1], color='blue', label = r'Fitting limits', linestyle = 'dotted', linewidth = 1)
         plt.plot(x_space, y_space, label = r'Fitted function', linewidth = 2.5)
 
@@ -230,7 +241,11 @@ def plot_fit(fnc, x, y, x_trim, y_trim, popt, fixed = True, mu = 0, n_ga = 1):
     
 def print_parameters(popt,pcov,labels):
     '''
-    print fitting parameters
+    Prints fitting parameters
+
+    :param popt:        Fit parameters
+    :param pcov:        Fit covariances
+    :param labels:      Labels of parameters
     '''
     print('===============================')
     print("        Fitting output      ")
@@ -244,6 +259,15 @@ def print_parameters(popt,pcov,labels):
 def trim_data(x, y, p, v, n_gauss, plot = False):
     '''
     Trim data to apply fit over
+
+    :param x:       X Values
+    :param y:       Y Values
+    :param p:       Peak Values
+    :param v:       Valley Values
+    :param n_gauss: Number of Gaussians
+    :param plot:    Plotting toggle
+
+    :return (xtrim, ytrim): Trimmed x and y values
     '''
 
     # distance between peak and valley
