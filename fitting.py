@@ -36,11 +36,8 @@ def fit_func_fixed(function, x, y, fixed_p0, p0):
     '''
     function that will fix mu specifically for the case of two gaussian.
     '''
-    # in this case, we need mu1
-    mu1 = fixed_p0
-    mu2 = mu1*2
 
-    popt, pcov = curve_fit(lambda x, A1, sigma1, A2, sigma2: function(x, A1, mu1, sigma1, A2, mu2, sigma2), x, y, p0, maxfev = 500000)
+    popt, pcov = curve_fit(lambda x, A1, mu1, sigma1, A2, sigma2: function(x, A1, mu1, sigma1, A2, (mu1*2), sigma2), x, y, p0, maxfev = 500000)
     return (popt, pcov)
 
 
@@ -136,9 +133,9 @@ def create_fit(fnc, x, y, p, v, n_gauss, a_prio, mu = 0):
 
 
     
-def plot_fit(fnc, x, y, x_trim, y_trim, popt, fixed = True, mu = 0):
+def plot_fit(fnc, x, y, x_trim, y_trim, popt, fixed = True, mu = 0, n_ga = 1):
     '''
-    plot fits
+    plot fits with a bunch of features. NEEDS CLEAN REWRITING
     '''
 
     x_space = np.linspace(min(x), max(x), len(x))
@@ -151,9 +148,23 @@ def plot_fit(fnc, x, y, x_trim, y_trim, popt, fixed = True, mu = 0):
         y_space[y_space < 1] = 1                # squashing values near 0 for plotting purposes
         plt.plot(x_space, y_space, linewidth=2.5, label = r'Fitted function')
     else:
-        y_space = fnc(x_space, popt[0], mu, popt[1], popt[2], mu*2, popt[3])
-        y_space[y_space < 1] = 1                 # squashing values near 0 for plotting purposes
-        plt.plot(x_space, y_space, label = r'Fitted function')
+        y_space = fnc(x_space, popt[0], popt[1], popt[2], popt[3], mu*2, popt[4])
+        y_space[y_space < 1] = 1                            # squashing values near 0 for plotting purposes
+        plt.axvline(x_trim[0], color='blue', linestyle = 'dotted', linewidth = 1)                              # plotting limits of trim
+        plt.axvline(x_trim[-1], color='blue', label = r'Fitting limits', linestyle = 'dotted', linewidth = 1)
+        plt.plot(x_space, y_space, label = r'Fitted function', linewidth = 2.5)
+
+        y_space_n = []
+        for i in range(0,n_ga):
+            name = "Gaussian " + str(i)
+            # plot individual gaussian contribution
+            y_space_n.append(gauss_1(x_space, popt[(i*3)], (popt[1])*(i+1), popt[(i+1)*2])) # goofy looping lmao
+            # trim y space lengths
+            y_space_n[i][y_space_n[i] < 1] = 1
+            plt.plot(x_space, y_space_n[i], label = name, linestyle = '-')
+        
+
+        
 
     plt.title('Fit')
     plt.legend()
@@ -181,9 +192,12 @@ def trim_data(x, y, p, v, n_gauss, plot = False):
     # distance between peak and valley
     dif = (p - v) + (1*n_gauss) # don't lose the tail!
 
+    lower = v
+    upper = (p + dif*(n_gauss+1)) # +1 arbitrary
+
     # trim data around gaussians, based on number
-    x_trim = x[v : (p + dif*n_gauss)]
-    y_trim = y[v : (p + dif*n_gauss)]
+    x_trim = x[lower : upper]
+    y_trim = y[lower : upper]
 
     if (plot == True):
         plt.plot(x_trim, y_trim)
@@ -199,7 +213,7 @@ def main():
     prom = 100                                  # prominence of peaks
     n_gauss = 2                                # number of gaussians
     fnc = [gauss_1, gauss_2]
-    verbose = True
+    verbose = False
     fix = True                                # fixed mu
 
     n_g = n_gauss-1                                 
@@ -240,10 +254,10 @@ def main():
         if (n_gauss == 2):                      # CURRENTLY ONLY WORKS FOR 2 GAUSSIANS
 
             labels.append(["A1", "sigma1"])
-            labels.append(["A1", "sigma1", "A2", "sigma2"])
+            labels.append(["A1", "mu1", "sigma1", "A2", "sigma2"])
 
             a_prio.append([370, 0.02])                          # one gaussian
-            a_prio.append([2986, 0.02, 500, 0.01])               # two gaussians
+            a_prio.append([2986, x[p], 0.02, 500, 0.01])               # two gaussians
 
             print("mu fixed to: {}".format(x[p]))
 
@@ -267,7 +281,7 @@ def main():
     print_parameters(popt,pcov, labels[n_g])
 
     # plot fit
-    plot_fit(fnc[n_g], x, y, x_trim, y_trim, popt, mu = mu_fix)
+    plot_fit(fnc[n_g], x, y, x_trim, y_trim, popt, mu = mu_fix, n_ga = n_gauss)
 
     
 
