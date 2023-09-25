@@ -7,8 +7,14 @@ from scipy.optimize import curve_fit
 
 def gauss_1(x, A, mu, sigma):
     '''
-    Basic gaussian function.
-    Single gaussian fitting 
+    Gaussian function as per https://en.wikipedia.org/wiki/Gaussian_function
+    
+    :param x: X values
+    :param A: Amplitude
+    :param mu: Mean value 
+    :param sigma: Variance
+
+    :return: Y values wrt x for Gaussian function
     '''
 
     g = A * np.exp(-((x - mu)**2)/(2*(sigma**2)))
@@ -18,7 +24,18 @@ def gauss_1(x, A, mu, sigma):
 
 def gauss_2(x, A1, mu1, sigma1, A2, mu2, sigma2):
     '''
-    Basic 2 gaussian fitting function
+    2 Gaussian functions applied additively
+
+    :param x: X values
+    :param A1: Amplitude of 1st Gaussian
+    :param mu1: Mean value of 1st Gaussian 
+    :param sigma1: Variance of 1st Gaussian
+
+    :param A2: Amplitude of 2nd Gaussian
+    :param mu2: Mean value of 2nd Gaussian 
+    :param sigma2: Variance of 2nd Gaussian
+
+    :return: Y values wrt x for double Gaussian function   
     '''
 
     g1 = A1 * np.exp(-((x - mu1)**2)/(2*(sigma1**2)))
@@ -27,27 +44,50 @@ def gauss_2(x, A1, mu1, sigma1, A2, mu2, sigma2):
     return (g1 + g2)
 
 def fit_func(function, x, y, p0):
+    '''
+    Function that separates the ugly parameters of curve_fit from the main codeline to reduce clutter.
+    Preferably used for singular gaussian fits
+
+    :param function: Input function
+    :param x: X values
+    :param y: Y values
+    :param p0: A priori parameter guesses
+
+    :return (popt, pcov): parameters values and covariances in tuple
+    '''
     # fit function
     popt, pcov = curve_fit(function, x, y, p0, maxfev = 500000)
     return (popt, pcov)
 
 
-def fit_func_fixed(function, x, y, fixed_p0, p0):
+def fit_func_fixed(function, x, y, p0):
     '''
-    function that will fix mu specifically for the case of two gaussian.
+
+    Function that fixes the value of mu for respective fits, and separates the ugly parameters of curve_fit from the main codeline to reduce clutter.
+
+    :param function: Input function
+    :param x: X values
+    :param y: Y values
+    :param p0: A priori parameter guesses
+
+    :return (popt, pcov): parameters values and covariances in tuple
+
     '''
 
     popt, pcov = curve_fit(lambda x, A1, mu1, sigma1, A2, sigma2: function(x, A1, mu1, sigma1, A2, (mu1*2), sigma2), x, y, p0, maxfev = 500000)
     return (popt, pcov)
 
 
-def produce_data_points(file_path, bin_no = 100, prom = 100, plot = False):
+def produce_data_points(file_path, bin_no = 100, plot = False):
     '''
     Produce data points (x,y) for fitting, and plot if asked for.
     Also includes cleaning the data (removing below zero values, setting values smaller than 1 = 0)
     
-    :file_path: - Source file you're producing from
-    :bins:      - Number of bins in histogram
+    :param file_path: Source file you're producing from
+    :param bin_no: Number of bins in histogram
+    :param plot: Plotting toggle
+
+    :return (x,y): tuple of x and y values
     '''
 
     data = np.load(file_path)
@@ -59,8 +99,6 @@ def produce_data_points(file_path, bin_no = 100, prom = 100, plot = False):
 
     bin_pos = bin_pos[:-1] + np.diff(bin_pos)/2
 
-    # removing unphysically small heights (10^-47), as they're not useful
-    #heights[heights < 1] = 1
 
     # plotting
     if (plot == True):
@@ -74,11 +112,20 @@ def produce_data_points(file_path, bin_no = 100, prom = 100, plot = False):
 
 
 def find_PV(x, y, prom = 100, plot = False):
-    i = 0
-    # hacky way to search for peaks
+    '''
+    Peak and Valley finding code
+
+    :param x: X values
+    :param y: Y values
+    :param prom: Prominence of peaks and valleys
+    :param plot: Plotting toggle
+
+    :return (peaks, valleys): index for x at which y peaks and valleys
+    '''
+    # hacky way to search for peaks by toggling prominence slightly until finding what you want.
+    # warning! really hacky, so you can just get trapped
     while True:
         
-        i += 1
         # find valley
         valleys, _ = find_peaks(-y, prominence = prom)
 
@@ -112,7 +159,16 @@ def find_PV(x, y, prom = 100, plot = False):
 
 def create_fit(fnc, x, y, p, v, n_gauss, a_prio, mu = 0):
     '''
-    generate the fit
+    General fitting function for N gaussians including limiting function
+
+    :param fnc:     Input function
+    :param x:       X values
+    :param y:       Y values
+    :param p:       Peak index
+    :param v:       Valley index
+    :param n_gauss: Number of gaussian fits
+    :param a_prio:  A priori guesses for fit
+    :param mu:      Mean (decides whether fixed or not)
     '''
     # distance between peak and valley
     dif = (p - v) + (1*n_gauss) # don't lose the tail!
@@ -126,7 +182,7 @@ def create_fit(fnc, x, y, p, v, n_gauss, a_prio, mu = 0):
     if (mu == 0):
         popt, pcov = fit_func(fnc, x, y, p0 = a_prio)
     else:
-        popt, pcov = fit_func_fixed(fnc, x, y, mu, p0 = a_prio) # passing through mu as the fixed parameter
+        popt, pcov = fit_func_fixed(fnc, x, y, p0 = a_prio)
     
 
     return (popt, pcov)
@@ -209,14 +265,18 @@ def trim_data(x, y, p, v, n_gauss, plot = False):
 
 def main():
 
+    '''
+    Collects charge histogram npy file and outputs N gaussian fits to it.
+    '''
+
     file_path = "output/RUN_38/ADC_data.npy"    # file path
     prom = 100                                  # prominence of peaks
-    n_gauss = 2                                # number of gaussians
-    fnc = [gauss_1, gauss_2]
-    verbose = False
-    fix = True                                # fixed mu
+    n_gauss = 2                                 # number of gaussians
+    fnc = [gauss_1, gauss_2]                    # the separate functions
+    verbose = False                             # verbose 
+    fix = True                                  # fixed first mu value for gaussian
 
-    n_g = n_gauss-1                                 
+    n_g = n_gauss-1                             # custom n variable because its useful           
 
     ################################## INITIAL PROCESSING ##################################
 
