@@ -60,39 +60,3 @@ Plots TRC files iteratively from PATH
 ### process_waveforms.py
 
 Subtract one waveform from another and then view these subtracted waveforms and save them. Simple script, should be absorbed into something else
-
-## Plotting
-
-Couple of bespoke scripts for plotting specific data.
-
-### plot_data.py
-
-More precise plotting control for .npy files
-
-### plot_data_chargeInt.py
-
-Simple histogram plot for charge integral .npy data
-
-### plot_data_waveforms.py
-
-Waveform plotter with pedestal subtraction via median.
-
-### plot_data_points.py
-
-Plots output .trc files from oscilloscope.
-
-
-## Reformatting
-
-As part of a process to make the repo less script-heavy. Planning to take most major functions and put them in a well documented 'PMT_func.py' file. These two files are the beginning of this process.
-
-### marc_binning.py
-
-Binning method stripped form Marc Seeman's Masters project found [here](https://github.com/MarcSeemann/Mphys-Project)
-
-
-
-
-### subtract_waveforms.py
-
-Simple subtraction application.
