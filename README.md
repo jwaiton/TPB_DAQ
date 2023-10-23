@@ -1,32 +1,65 @@
 # TPB_DAQ
-Currently a repository dedicated to working around lecroys stupid TRC files and using python for basic baseline subtraction. 
+Currently a repository dedicated to working around lecroys TRC files and using python for basic baseline subtraction. 
+The current format consists of folders that contain example files, output files, obsolete and relevant scripts, and miscellaneous documentation.
 
-## Base scripts
+---
 
-### parse_data.py
+## Folders
 
-Takes folder of TRC files and creates integrated charge histogram, outputs to output/run_NN folder integrated data and basic plot.
+### TPC_lab_testing
+TRC files containing PMT waveforms from a lecroy waverunner 8000 series oscilloscope. Used for testing certain scripts dependent on said TRCs.
 
-### parse_data_waveforms.py
+### core
+Folder containing the basic functions used to run most relevant scripts in this repository. (Hopefully) well documented for adaptability.
 
-Takes folder of TRC files and creates dumb waveform data, outputs to output_waveforms/run_NN folder waveform plotting data. Use in conjunction with plot_data.py.
+### docs
+Documentation for the core functions (WIP)
 
-### find_peaks.py
+### obs
+Obsolete functions still kept for being useful in the future
 
-Peak finding algorithm, will be looked at more significantly soon. Uses .npy files created by *parse_data.py*
+### output
+Output from processing PMT waveforms, consisting of charge integrals
+
+### output waveforms
+Output from processing PMT waveforms, consisting of averaged waveforms
+
+### testing_output
+Bin for useless outputs from scripts
+
+---
+
+## Scripts
 
 ### analyse_trc.py
 
 Simple script that outputs plot and ADC score for any TRC file passed to it.
 Assuming file structure matches expected 'C1--PMT-test_calibration_long--' format.
 
-### plot_data_points.py
+### apply_fits.py
 
-Automated plotting script, will continuously plot.
+Script that applies 2 gaussian fits to charge histogram .npy data. Can be adapted for N gaussian fits.
+
+### data_binning.py
+
+Binning script that has untested functionality.
+
+### parse_data.py/parse_dat.py
+
+Takes folder of TRC files and creates integrated charge histogram, outputs to output/run_NN folder integrated data and basic plot.
+*Two versions currently exist. _data is original working version, _dat is version using core/processing functions and may be buggy*
+
+### parse_data_waveforms.py
+
+Takes folder of TRC files and creates dumb waveform data, outputs to output_waveforms/run_NN folder waveform plotting data. Use in conjunction with plot_data.py.
+
+### plot_events.py
+
+Plots TRC files iteratively from PATH
 
 ### process_waveforms.py
 
-Basic script to bin waveforms, and subtract one waveform from another for plotting. Used for background subtraction plots.
+Subtract one waveform from another and then view these subtracted waveforms and save them. Simple script, should be absorbed into something else
 
 ## Plotting
 
@@ -58,9 +91,7 @@ As part of a process to make the repo less script-heavy. Planning to take most m
 Binning method stripped form Marc Seeman's Masters project found [here](https://github.com/MarcSeemann/Mphys-Project)
 
 
-### data_binning.py
 
-Simple binning script that may or may not work
 
 ### subtract_waveforms.py
 
