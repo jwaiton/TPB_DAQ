@@ -6,8 +6,10 @@ from os.path import exists
 from os import mkdir
 from scipy import stats
 
+import core.plotting as pl
 '''
-Simple plotting script
+    John Waiton - 2023
+        Plots TRC files continuously from PATH
 '''
 
 
@@ -16,19 +18,6 @@ PATH = "../../../../../media/e78368jw/SAMSUNG/tpblab/alpha_150mV_trig/"
 test_event = "C1--PMT-test_calibration_long--00000.trc"
 output_dir = "output/"
 
-def plot_signal_event(event_name):
-    '''
-    plot events that appear to have signal in them (y value much larger than the baseline)
-    '''
-    data = parse.ScopeData(PATH+str(event_name))
-    x_vals = np.linspace(0,len(data.x), dtype = int, num = len(data.x), endpoint = True)
-    #plt.plot(data.x, data.y)
-    print(len(data.x))
-    plt.plot(x_vals, -data.y)
-    plt.title(str(event_name))
-    plt.show()
-
-
 
 def main():
     filenames = next(walk(PATH), (None, None, []))[2]
@@ -36,7 +25,7 @@ def main():
     print("Number of files: {}".format(len(filenames)))
 
     for i in range(len(filenames)):
-        plot_signal_event(filenames[i])
+        pl.plot_signal_event(filenames[i], PATH)
 
 
 main()

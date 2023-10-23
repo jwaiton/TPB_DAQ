@@ -7,7 +7,7 @@ from os import mkdir
 from scipy import stats
 
 # IMPROVE THIS BY MAKING A SEPARATE 'FUNCTIONS' PY
-import parse_data
+import core.processing as proc
 
 '''
 Script that creates basic waveform plot
@@ -61,12 +61,12 @@ def main():
         
         try:
             # collect event
-            data_x, a = parse_data.port_event(filenames[i], PATH, x_data = True)
+            data_x, a = proc.port_event(filenames[i], PATH, x_data = True)
             # flip
             a = -a
 
             # subtract baseline
-            b = parse_data.subtract_baseline(a, type = 'median')
+            b = proc.subtract_baseline(a, type = 'median')
 
             if (fast_running == False):
                 # find std and scan files to see if any are above this.

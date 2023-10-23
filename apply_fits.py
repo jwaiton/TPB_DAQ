@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
-import fitting as fits
+import core.fitting as fits
 
 
 def apply_fits(file_path = 'N/A', prom = 0, n_gauss = 0, fnc = 'none', verbose = False, fix = True):

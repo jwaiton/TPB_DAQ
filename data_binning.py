@@ -1,3 +1,7 @@
+'''
+    John Waiton - 2023
+        Testing script that reduces data points from lecroy trc files by binning
+'''
 import numpy as np
 import parse_data
 import matplotlib.pyplot as plt

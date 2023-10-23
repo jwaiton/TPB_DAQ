@@ -1,3 +1,10 @@
+'''
+John Waiton - 25.09.2023
+    Script that outputs plot and ADC score for any TRC file passed to it.
+    Assumes file structure matches expected 'C1--PMT-test_calibration_long--' format.
+
+'''
+
 import lecroyparser as parse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,14 +13,9 @@ from os.path import exists
 from os import mkdir
 from scipy import stats
 
-# IMPROVE THIS BY MAKING A SEPARATE 'FUNCTIONS' PY
-import parse_data
 
-
-'''
-Simple script that outputs plot and ADC score for any TRC file passed to it.
-Assuming file structure matches expected 'C1--PMT-test_calibration_long--' format.
-'''
+import core.processing as proc
+import core.plotting   as pl
 
 
 def main():
@@ -33,22 +35,22 @@ def main():
     else:
         mkdir(output_dir+"FILE_" + str(file_no) + "/")
 
-    data = parse_data.port_event(file_name, PATH)
+    data = proc.port_event(file_name, PATH)
 
     try:
         # collect data
         
         
         # subtract baseline
-        sub_data = parse_data.subtract_baseline(data, type = 'median')
+        sub_data = proc.subtract_baseline(data, type = 'median')
 
         # integrate
-        int_val = -parse_data.integrate(sub_data)
+        int_val = -proc.integrate(sub_data)
 
         print("Integrated value: {:.5g}".format(int_val))
 
         # plot data
-        parse_data.plot_signal_event(file_name, PATH)
+        pl.plot_signal_event(file_name, PATH)
     except:
         print("File within {} not found!".format(file_name))
         pass

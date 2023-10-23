@@ -1,12 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import plot_data_waveforms
-import marc_binning as marcB
+#import plot_data_waveforms
+#import marc_binning as marcB
 from scipy.interpolate import make_interp_spline, BSpline
 import pandas as pd
 
+import core.plotting as pl
+
 '''
-basic script to subtract one waveform from another and then use plot_data_waveforms/chargeint to view these subtracted waveforms
+    John Waiton - 2023
+        Subtract one waveform from another and then view these subtracted waveforms and save them. 
+        Simple script, should be absorbed into something else
 '''
 
 
@@ -27,7 +31,7 @@ def subtract_waveforms(file_path_1 = "output_waveforms/RUN_34/ADC_data.npy", fil
     # option to remove negatives?
     
     # plot new waveform
-    plot_data_waveforms.plot_waveform(data = data_sub, time = (100, 99.605))
+    pl.plot_waveform(data = data_sub, time = (100, 99.605))
 
     if output == True:
         # save new subtracted waveform
@@ -126,7 +130,7 @@ def bin_waveforms(file_path = "sub_waveform.npy", bin_ratio = 100, time_scale = 
 
 
     
-    plot_data_waveforms.plot_waveform(data = shrunk_data_y, time = (100, 99.6))
+    pl.plot_waveform(data = shrunk_data_y, time = (100, 99.6))
 
 
     '''
