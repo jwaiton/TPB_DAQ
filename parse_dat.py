@@ -69,7 +69,7 @@ def main():
 if __name__ == "__main__":
 
     #PATH = "SR_testing/SR_testing_500NS_5kS/"
-    PATH = "alpha_test_100us/56mV_trig_100us_dark8hrs/"
+    PATH = "../../../../../media/e78368jw/T7/33_3mV_PMT1003_meantime/"
     test_event = "C1--PMT-test_calibration_long--00000.trc"
     output_dir = "output/"
     main()
