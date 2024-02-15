@@ -67,12 +67,12 @@ def integrate_range(y_data, window = 0, debug = False):
 
 
 
-def collate_ADC_data(path_dir):
+def collate_ADC_data(PATH):
     '''
     collect all the ADC value across individual events recursively
     '''
     # collect filenames
-    filenames = next(walk(path_dir), (None, None, []))[2]
+    filenames = next(walk(PATH), (None, None, []))[2]
     print(filenames[1])
     print("Number of files: {}".format(len(filenames)))
 

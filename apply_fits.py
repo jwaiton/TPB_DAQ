@@ -13,26 +13,25 @@ import core.fitting as fits
 def apply_fits(file_path = 'N/A', prom = 0, n_gauss = 0, fnc = 'none', verbose = False, fix = True):
 
     # defaults for ease of use
-    file_path = "output/RUN_38/ADC_data.npy"    # file path
+    file_path = "../Wavedump_Wrapper_TPB/storage/John/testing/RUN000039/PMT/analysed_data/ADC_data.npy"    # file path
     prom = 100                                  # prominence of peaks
-    n_gauss = 2                                 # number of gaussians
+    n_gauss = 1                                # number of gaussians
     fnc = [fits.gauss_1, fits.gauss_2]                    # the separate functions
     verbose = False                             # verbose 
-    fix = True                                  # fixed first mu value for gaussian
+    fix = False                                  # fixed first mu value for gaussian
 
     n_g = n_gauss-1      
 
     ################################## INITIAL PROCESSING ##################################
 
     # produce data
-    x, y  = fits.produce_data_points(file_path, bin_no = 150, plot = verbose)
-    
+    x, y  = fits.produce_data_points(file_path, bin_no = 150, plot = True)
     # make them numpy arrays for easier manipulation
     x = np.array(x)
     y = np.array(y)
 
     # find peaks
-    p, v = fits.find_PV(x, y, plot = verbose)
+    p, v = fits.find_PV(x, y, plot = False, verbose = True)
     
     # de-numpy these values (1,1 arrays)
     p = p[0]
@@ -50,7 +49,7 @@ def apply_fits(file_path = 'N/A', prom = 0, n_gauss = 0, fnc = 'none', verbose =
         labels.append(["A1", "mu1", "sigma1"])
         labels.append(["A1", "mu1", "sigma1", "A2", "mu2", "sigma2"])
 
-        a_prio.append([370, x[p], 0.02])                    # one gaussian
+        a_prio.append([370, x[p], 50])                    # one gaussian
         a_prio.append([370, x[p], 0.02, 100, x[p]*2, 0.02]) # two gaussians
 
         mu_fix = 0                                              # set a value for mu to zero

@@ -92,7 +92,6 @@ def produce_data_points(file_path, bin_no = 100, plot = False):
     '''
 
     data = np.load(file_path)
-
     # scrape data < 0 away
     data = data[(data > 0)]
 
@@ -112,7 +111,7 @@ def produce_data_points(file_path, bin_no = 100, plot = False):
     return (bin_pos, heights)
 
 
-def find_PV(x, y, prom = 100, plot = False):
+def find_PV(x, y, prom = 50, plot = False, verbose = False):
     '''
     Peak and Valley finding code
 
@@ -125,8 +124,8 @@ def find_PV(x, y, prom = 100, plot = False):
     '''
     # hacky way to search for peaks by toggling prominence slightly until finding what you want.
     # warning! really hacky, so you can just get trapped
+    print("Working")
     while True:
-        
         # find valley
         valleys, _ = find_peaks(-y, prominence = prom)
 
@@ -140,8 +139,16 @@ def find_PV(x, y, prom = 100, plot = False):
         elif ((len(peaks) < 2) and (len(valleys) == 0)):
             # increase prominence incrementally. This will almost 100% break
             prom = 0.9*prom
+        # this is a catch all case, cause the code might be weird sometimes
+        elif ((len(peaks) > 3) and len(valleys > 3)):
+            break
         else:
             prom = 1.1*prom
+
+        if (verbose == True):
+            print("Found {} peaks, {} valleys".format(len(peaks), len(valleys)))
+            print("Peaks: {}\nValleys: {}".format(peaks, valleys))
+
         
     print("Peak(s) found at: ({}, {})".format(x[peaks], y[peaks]))
     print("Valleys(s) found at: ({}, {})".format(x[valleys], y[valleys]))
